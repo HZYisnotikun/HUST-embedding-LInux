@@ -393,3 +393,42 @@ void fb_draw_text(int x, int y, char *text, int font_size, int color)
 	return;
 }
 
+/** draw a circle for multiple-touch*/
+void fb_draw_circle(int x, int y, int r, int color)
+{
+	int w, h, x0, y0, left, right, top, bottom;
+	if (x - r < 0)
+		left = 0;
+	else
+		left = x - r;
+	if (x + r > SCREEN_WIDTH)
+		right = SCREEN_WIDTH;
+	else
+		right = x + r;
+	if (y - r < 0)
+		top = 0;
+	else
+		top = y - r;
+	if (y + r > SCREEN_HEIGHT)
+		bottom = SCREEN_HEIGHT;
+	else
+		bottom = y + r;
+	w = right - left;
+	h = bottom - top;
+	x0 = left;
+	y0 = top;
+
+	int *buf = _begin_draw(x0, y0, w, h);
+	for (y0 = top; y0 <= bottom; y0++)
+	{
+		for (x0 = left; x0 <= right; x0++)
+		{
+			double distance = sqrt((x0 - x) * (x0 - x) + (y0 - y) * (y0 - y));
+			if (distance <= r)
+			{
+				*(buf + y0 * SCREEN_WIDTH + x0) = color;
+			}
+		}
+	}
+	return;
+}

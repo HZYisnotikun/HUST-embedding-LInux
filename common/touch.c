@@ -22,6 +22,7 @@ int touch_init(char *dev)
 		printf("touch_init open %s error!errno = %d\n", dev, errno);
 		return -1;
 	}
+	printf("open successfully!\n");
 	return fd;
 }
 
@@ -48,7 +49,7 @@ int touch_read(int touch_fd, int *x, int *y, int *finger)
 		printf("touch_read error %d, errno=%d\n", n, errno);
 		return TOUCH_ERROR;
 	}
-//	printf("event read: type-code-value = %d-%d-%d\n", data.type, data.code, data.value);
+	printf("event read: type-code-value = %d-%d-%d\n", data.type, data.code, data.value);
 	switch(data.type)
 	{
 	case EV_ABS:
