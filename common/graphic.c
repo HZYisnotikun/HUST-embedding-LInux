@@ -393,10 +393,13 @@ void fb_draw_text(int x, int y, char *text, int font_size, int color)
 	return;
 }
 
-/** draw a circle for multiple-touch*/
+/** draw a circile for multiple-touch*/
 void fb_draw_circle(int x, int y, int r, int color)
 {
 	int w, h, x0, y0, left, right, top, bottom;
+	printf("x is %d\n",x);
+	//x = x - 200*x/SCREEN_WIDTH;
+	//printf("new x is %d\n",x);
 	if (x - r < 0)
 		left = 0;
 	else
@@ -417,7 +420,7 @@ void fb_draw_circle(int x, int y, int r, int color)
 	h = bottom - top;
 	x0 = left;
 	y0 = top;
-
+	printf("w is %d,h is %d,left is %d, top is %d\n",w,h,left,top);
 	int *buf = _begin_draw(x0, y0, w, h);
 	for (y0 = top; y0 <= bottom; y0++)
 	{
@@ -431,4 +434,54 @@ void fb_draw_circle(int x, int y, int r, int color)
 		}
 	}
 	return;
+}
+
+/** draw a circle for multiple-touch */
+void fb_draw_circle1(int x, int y, int r, int color)
+{
+    int left, right, top, bottom;
+
+    // 确定绘制范围，防止越界
+    left = (x - r < 0) ? 0 : x - r;
+    right = (x + r > SCREEN_WIDTH) ? SCREEN_WIDTH : x + r;
+    top = (y - r < 0) ? 0 : y - r;
+    bottom = (y + r > SCREEN_HEIGHT) ? SCREEN_HEIGHT : y + r;
+
+    // 获取缓冲区指针
+    int *buf = _begin_draw(left, top, right - left, bottom - top);
+
+    // 使用中点圆算法绘制圆
+    int dx = 0, dy = r;
+    int d = 1 - r; // 初始决策参数
+
+    // 在八个对称点上绘制像素
+    while (dx <= dy)
+    {
+        // 绘制每个象限的 8 个对称点
+        if (x + dx >= 0 && x + dx < SCREEN_WIDTH) {
+            if (y + dy >= 0 && y + dy < SCREEN_HEIGHT) buf[(y + dy) * SCREEN_WIDTH + (x + dx)] = color;
+            if (y - dy >= 0 && y - dy < SCREEN_HEIGHT) buf[(y - dy) * SCREEN_WIDTH + (x + dx)] = color;
+        }
+        if (x - dx >= 0 && x - dx < SCREEN_WIDTH) {
+            if (y + dy >= 0 && y + dy < SCREEN_HEIGHT) buf[(y + dy) * SCREEN_WIDTH + (x - dx)] = color;
+            if (y - dy >= 0 && y - dy < SCREEN_HEIGHT) buf[(y - dy) * SCREEN_WIDTH + (x - dx)] = color;
+        }
+        if (x + dy >= 0 && x + dy < SCREEN_WIDTH) {
+            if (y + dx >= 0 && y + dx < SCREEN_HEIGHT) buf[(y + dx) * SCREEN_WIDTH + (x + dy)] = color;
+            if (y - dx >= 0 && y - dx < SCREEN_HEIGHT) buf[(y - dx) * SCREEN_WIDTH + (x + dy)] = color;
+        }
+        if (x - dy >= 0 && x - dy < SCREEN_WIDTH) {
+            if (y + dx >= 0 && y + dx < SCREEN_HEIGHT) buf[(y + dx) * SCREEN_WIDTH + (x - dy)] = color;
+            if (y - dx >= 0 && y - dx < SCREEN_HEIGHT) buf[(y - dx) * SCREEN_WIDTH + (x - dy)] = color;
+        }
+
+        // 更新决策参数
+        if (d < 0) {
+            d += 2 * dx + 3;
+        } else {
+            d += 2 * (dx - dy) + 5;
+            dy--;
+        }
+        dx++;
+    }
 }

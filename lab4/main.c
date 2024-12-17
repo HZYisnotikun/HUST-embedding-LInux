@@ -30,7 +30,7 @@ static void touch_event_cb(int fd)
 		switch (finger)
 		{
 		case 0:
-			color = CYAN;
+			color = YELLOW;
 			break;
 		case 1:
 			color = BLUE;
@@ -56,7 +56,7 @@ static void touch_event_cb(int fd)
 		switch (finger)
 		{
 		case 0:
-			color = CYAN;
+			color = YELLOW;
 			break;
 		case 1:
 			color = BLUE;
@@ -74,6 +74,7 @@ static void touch_event_cb(int fd)
 			break;
 		}
 		fb_draw_circle(old[finger].x, old[finger].y, radius[finger] + 2, COLOR_BACKGROUND);
+		//fb_draw_rect(x-radius[finger]-2,y-radius[finger]-2,2*radius[finger]+4,2*radius[finger]+4,COLOR_BACKGROUND);
 		fb_draw_circle(x, y, radius[finger], color);
 		old[finger].x = x;
 		old[finger].y = y;
@@ -103,7 +104,7 @@ int main(int argc, char *argv[])
 	//打开多点触摸设备文件, 返回文件fd
 	touch_fd = touch_init("/dev/input/event2");
 	//添加任务, 当touch_fd文件可读时, 会自动调用touch_event_cb函数
-	printf("touch_fd: %d\ntouch_event_cb: %d\n",touch_fd,touch_event_cb);
+	//printf("touch_fd: %d\ntouch_event_cb: %d\n",touch_fd,touch_event_cb);
 	task_add_file(touch_fd, touch_event_cb);	
 	task_loop(); //进入任务循环
 	return 0;

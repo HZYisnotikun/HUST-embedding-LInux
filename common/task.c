@@ -184,7 +184,7 @@ static void _check_and_do_task(void)
 
 	myTimer *ptimer;
 	myFile *pfile;
-	printf("is this function even called?\n");
+	//printf("is this function even called?\n");
 	/*-----------------------------------------------------------*/
 	now = task_get_time();
 	timeout = -1;
@@ -204,7 +204,7 @@ static void _check_and_do_task(void)
 		pto = NULL; /*永远等待*/
 	}
 	/*----------------------------------------------------------*/
-	printf("timeout end\n");
+	//printf("timeout end\n");
 	FD_ZERO(&rfds);
 	setsize = 0;
 	for(i=0; i<FILE_NUM_MAX; ++i)
@@ -217,9 +217,9 @@ static void _check_and_do_task(void)
 	}
 
 	errno = 0;
-	printf("select started\n");
+	//printf("select started\n");
 	e = select(setsize+1, &rfds, NULL, NULL, pto);
-	printf("there are %d files ready\n",e);
+	//printf("there are %d files ready\n",e);
 	if((e<0)&&(errno != EINTR)&&(errno != EAGAIN)&&(errno != EWOULDBLOCK))
 	{
 		printf("select error(%d): %s \n", errno, strerror(errno));

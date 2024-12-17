@@ -22,7 +22,7 @@ int touch_init(char *dev)
 		printf("touch_init open %s error!errno = %d\n", dev, errno);
 		return -1;
 	}
-	printf("open successfully!\n");
+	//printf("open successfully!\n");
 	return fd;
 }
 
