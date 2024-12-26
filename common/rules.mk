@@ -7,7 +7,7 @@ CFLAGS := -Wall -O3 -funroll-loops -fprefetch-loop-arrays -falign-functions=32
 LDFLAGS:=-Wall
 
 INCLUDE := -I../common/external/include
-LIB := -L../common/external/lib -ljpeg -lfreetype -lpng -lasound -lz -lc -lm
+LIB := -L../common/external/lib -ljpeg -lfreetype -lpng -lasound -lz -lc -lm -pthread
 
 EXESRCS := ../common/graphic.c ../common/touch.c ../common/image.c ../common/task.c $(EXESRCS)
 
