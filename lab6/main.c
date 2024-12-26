@@ -120,7 +120,8 @@ void dead(int people, int fromflag)
 	sleep(3);
 	fb_draw_image(0, 0, gg, 0);
 	fb_update();
-	return;
+
+	exit(0);
 }
 void draw_blood(int change_0, int change_1, int fromflag)
 {
@@ -132,6 +133,8 @@ void draw_blood(int change_0, int change_1, int fromflag)
 
 	fb_draw_rect(650, 25, 355, 15, color[7]);
 	fb_draw_rect(1000 - blood[1], 27, blood[1], 10, color[0]);
+	fb_draw_image(370, 2, lp, 0);
+	fb_draw_image(607, 2, rp, 0);
 	fb_update();
 	if (blood[0] <= 0)
 		dead(0, fromflag);
