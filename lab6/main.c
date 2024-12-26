@@ -22,7 +22,7 @@
 #define SEND_W 60
 #define SEND_H 60
 // #define easy_AI
-int IP = 1;
+int IP = 0;
 int color[8] = {RED, ORANGE, YELLOW, GREEN, CYAN, BLUE, PURPLE, BLACK};
 static int touch_fd;
 static int bluetooth_fd;
@@ -33,7 +33,7 @@ int blood[2] = {350, 350};			 // 初始血量
 fb_image *img_move_left[2], *img_move_right[2], *img_attack_left[2], *img_attack_right[2], *img_dead_left[2], *img_dead_right[2], *img_skill_left[2], *img_skill_right[2];
 fb_image *img_background; // 定义全局变量存储背景图片
 fb_image *menu[6];		  // 菜单
-fb_image *gg;
+fb_image *gg, *lp, *rp;
 void init_img()
 {
 
@@ -71,6 +71,9 @@ void init_img()
 	menu[3] = fb_read_png_image("./picture/f.png");
 	menu[4] = fb_read_png_image("./picture/s1.png");
 	menu[5] = fb_read_png_image("./picture/s2.png");
+
+	rp = fb_read_png_image("./picture/rp.png");
+	lp = fb_read_png_image("./picture/lp.png");
 	// img_move_left[0] = fb_read_png_image("./picture/3333.png");
 	// img_move_right[0] = fb_read_png_image("./picture/3333.png");
 	// img_move_left[1] = fb_read_png_image("./picture/3333.png");
@@ -513,6 +516,9 @@ int main(int argc, char *argv[])
 	draw_move(0, flag[0]);									// 绘制初始人物
 	draw_blood(0, 0, 0);									// 画血条
 	fb_draw_rect(20, 235, SCREEN_WIDTH - 40, 10, color[7]); // 绘制楼层
+
+	fb_draw_image(370,2,lp,0);
+	fb_draw_image(607,2,rp,0);
 	fb_update();
 
 	// 打开多点触摸设备文件, 返回文件fd
